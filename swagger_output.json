@@ -1,0 +1,141 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "PICPAY-CRAQUE API",
+    "description": "Api da maré que faz transferencia para o Pic Pay dos clientes"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "",
+      "description": ""
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {},
+  "consumes": [
+    "application/json",
+    "multipart/form-data",
+    "application/x-www-form-urlencoded",
+    "text/html"
+  ],
+  "produces": [
+    "application/json",
+    "multipart/form-data",
+    "application/x-www-form-urlencoded",
+    "text/html"
+  ],
+  "paths": {
+    "/auth/authenticate": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint usado para logar na api do pic pay, utilize o client_id e client_secret.",
+        "parameters": [
+          {
+            "name": "Payload User",
+            "in": "body",
+            "schema":{
+              "type": "object",
+              "propeties": {
+                "client_id": {
+                  "type": "string"
+                },
+                "client_secret": {
+                  "type": "string"
+                }
+              }
+            },            
+            "example": {
+              "client_id": "id do cliente",
+              "client_secret": "senha do cliente"
+            },
+            "description": "",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/transfer/listTransfer/{sucess}/{cpfCnpj}": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "description": "Endpoint usado para filtrar as transferências feitas.",
+        "parameters": [
+          {
+            "name": "sucess",
+            "in": "path",
+            "schema":{
+              "type": "boolean"
+            },            
+            "example": {
+              "sucess": "true/false/all(caso queira todos)"
+            },
+            "description": "",
+            "required": true
+          },
+          {
+            "name": "cpfCnpj",
+            "in": "path",
+            "schema":{
+              "type": "string"
+            },            
+            "example": {
+              "sucess": "cpf/cnpj/all com ou sem máscara"
+            },
+            "description": "",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/transfer/": {
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "description": "Endpoint para ler um arquivo .xlsx e retornar os cpfs e fazer as transferências, o resultado é salvo em um banco NoSQL.",
+        "parameters": [
+          {
+            "name": "filetoupload",
+            "in": "formData",
+            "type": "file",
+            "description": "Arquivo para upload",
+            "required": true
+          },
+          {
+            "name": "value",
+            "in": "formData",
+            "type": "number",
+            "description": "Valor a ser transferido",
+            "required": true
+          },
+          {
+            "name": "token",
+            "in": "formData",
+            "type": "string",
+            "description": "token para validação da requisição",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    }
+  },
+  "definitions": {}
+}
